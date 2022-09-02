@@ -24,6 +24,7 @@
 #include <QDBusReply>
 #include <QJsonDocument>
 
+//[REWORKED] Don't only get local DB's data, also request from plugins. See EDITEDs.
 
 CScheduleDBus *CScheduleDBus::m_scheduleDBus = nullptr;
 CScheduleDBus::CScheduleDBus(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent)
@@ -31,7 +32,7 @@ CScheduleDBus::CScheduleDBus(const QString &service, const QString &path, const 
 {
     //关联后端dbus触发信号
     if (!QDBusConnection::sessionBus().connect(this->service(), this->path(), staticInterfaceName(), "", this, SLOT(propertyChanged(QDBusMessage)))) {
-        qWarning() << "the connection was fail!";
+        qWarning() << "the connection has failed!";
     };
 }
 
@@ -98,13 +99,20 @@ bool CScheduleDBus::GetJobs(const QDate &startDate, const QDate &endDate, QMap<Q
     QDBusMessage reply = pCall.reply();
     if (reply.type() != QDBusMessage::ReplyMessage) {
         qWarning() << "GetJobs err ," << reply;
-        return false;
-    }
-    QDBusReply<QString> jobs =  reply;
+        //return false; Other services might succeed.
+    } else {
+        QDBusReply<QString> jobs =  reply;
 
-    if (!jobs.isValid())
-        return false;
-    info = ScheduleDataInfo::StrJsonToRangeInfo(jobs.value());
+        if (!jobs.isValid()) {
+            return false;
+        }
+        info = ScheduleDataInfo::StrJsonToRangeInfo(jobs.value());
+    }
+
+    //Then load from the plugins.
+    PluginsManager::instance()->getJobs(startDate, endDate, info);
+    // [TODO] Check if we have to merge the results with info.
+
     return  true;
 }
 
