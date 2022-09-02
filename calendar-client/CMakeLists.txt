@@ -75,6 +75,9 @@ include_directories(../calendar-basicstruct/)
 # Tell CMake to create the executable
 add_executable(${PROJECT_NAME} ${Calendar_SRC} ${APP_QRC})
 
+#Add the plugins
+add_subdirectory(plugins)
+
 target_include_directories(${PROJECT_NAME} PUBLIC ${DtkWidget_INCLUDE_DIRS} ${OBJECT_BINARY_DIR})
 target_link_libraries(${PROJECT_NAME}
     ${DtkWidget_LIBRARIES}
