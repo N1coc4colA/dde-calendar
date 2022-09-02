@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>calendarModule.py</file>
+    </qresource>
+</RCC>
+
