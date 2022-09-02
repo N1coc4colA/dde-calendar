@@ -125,6 +125,11 @@ public:
      */
     void setIsLunar(bool isLunar);
 
+    //The followings are used to support other calendar services.
+    bool isFromPlugin = false; // Used to disable some features (e.g. edit, move...)
+    QString calendarServiceName = ""; // Used to identify where the event comes from, empty if from local DB. Might be used to enable showing the event's data.
+    void *calendarServiceData = nullptr; //[CHECK] Using C-style, maybe switch to QVariant.
+
 private:
     //获取日程提醒规则
     QString getScheduleRemind() const;
