@@ -45,6 +45,8 @@
 #include <QPainter>
 #include <QPainterPath>
 
+//[REWORKED] Avoid triggering menus when the event is from a plugin. See the TODOs
+
 //定义拖拽日程
 ScheduleDataInfo DragInfoGraphicsView::m_DragScheduleInfo;
 bool DragInfoGraphicsView::m_hasUpdateMark = false;
@@ -337,11 +339,13 @@ void DragInfoGraphicsView::contextMenuEvent(QContextMenuEvent *event)
             QAction *action_t = m_rightMenu->exec(QCursor::pos());
 
             if (action_t == m_editAction) {
-                CScheduleDlg dlg(0, this);
-                dlg.setData(infoitem->getData());
-                if (dlg.exec() == DDialog::Accepted) {
-                    emit signalsUpdateSchedule();
-                }
+            	if (!infoitem->getData().isFromPlugin) {
+                   CScheduleDlg dlg(0, this);
+                    dlg.setData(infoitem->getData());
+                    if (dlg.exec() == DDialog::Accepted) {
+                        emit signalsUpdateSchedule();
+                    }
+                } //[TODO] Support editing the data from the plugin.
             } else if (action_t == m_deleteAction) {
                 DeleteItem(infoitem->getData());
             }
@@ -523,6 +527,11 @@ void DragInfoGraphicsView::DragPressEvent(const QPoint &pos, DragInfoItem *item)
         }
         m_DragScheduleInfo = item->getData();
         m_PressScheduleInfo = item->getData();
+
+        if (m_DragScheduleInfo.isFromPlugin) {
+        	return; //[TODO] Support editing the data from the plugin
+        }
+
         m_InfoBeginTime = m_DragScheduleInfo.getBeginDateTime();
         m_InfoEndTime = m_DragScheduleInfo.getEndDateTime();
         switch (mpressstatus) {
@@ -881,11 +890,13 @@ void DragInfoGraphicsView::slotContextMenu(CFocusItem *item)
         QAction *action_t = m_rightMenu->exec(screen_pos);
 
         if (action_t == m_editAction) {
-            CScheduleDlg dlg(0, this);
-            dlg.setData(infoitem->getData());
-            if (dlg.exec() == DDialog::Accepted) {
-                emit signalsUpdateSchedule();
-            }
+            if (!infoitem->getData().isFromPlugin) {
+                CScheduleDlg dlg(0, this);
+                dlg.setData(infoitem->getData());
+                if (dlg.exec() == DDialog::Accepted) {
+                    emit signalsUpdateSchedule();
+                }
+            } //[TODO] Support editing the data from the plugin.
         } else if (action_t == m_deleteAction) {
             DeleteItem(infoitem->getData());
         }
