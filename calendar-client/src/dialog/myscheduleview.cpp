@@ -33,6 +33,8 @@
 #include <QPainter>
 #include <QtMath>
 
+//[REWORKED] Avoid triggering menus when the event is from a plugin. See TODOs.
+
 DGUI_USE_NAMESPACE
 CMyScheduleView::CMyScheduleView(const ScheduleDataInfo &schduleInfo, QWidget *parent)
     : DCalendarDDialog(parent)
@@ -223,7 +225,7 @@ void CMyScheduleView::slotBtClick(int buttonIndex, const QString &buttonName)
         dlg.setData(m_scheduleInfo);
         if (dlg.exec() == DDialog::Accepted) {
             accept();
-        }
+        } //[TODO] Support editing the data from the plugin.
         return;
     }
 }
