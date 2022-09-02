@@ -20,6 +20,8 @@
 */
 #include "cscheduledbus.h"
 
+#include "pluginsmanager.h"
+
 #include <QDebug>
 #include <QDBusReply>
 #include <QJsonDocument>
