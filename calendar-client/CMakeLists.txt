@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 
 if (NOT DEFINED VERSION)
-     message(WARNING "Not defined version ,about dialog version set 1.2.2")
+     message(WARNING "Not defined version, about dialog version set 1.2.2")
     set(VERSION 1.2.2)
 endif ()
 
@@ -19,7 +19,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--as-needed -fPIE")
-set(CMAKE_EXE_LINKER_FLAGS "-pie")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie -rdynamic") #We need to export the binary's symbol, IDK how to just import one, that seems to be too hard to do.
 
 
 if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw_64")
