@@ -18,3 +18,5 @@ target_link_libraries(calendar_sample PRIVATE
 target_include_directories(calendar_sample PUBLIC
     ../../src
 )
+
+install(TARGETS calendar_sample DESTINATION /usr/lib/dde-calendar)

@@ -30,3 +30,5 @@ target_include_directories(google_calendar PUBLIC /usr/include/python3.9)
 target_include_directories(google_calendar PUBLIC
     ../../src
 )
+
+install(TARGETS google_calendar DESTINATION /usr/lib/dde-calendar)

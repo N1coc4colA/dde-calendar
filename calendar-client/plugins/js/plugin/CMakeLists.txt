@@ -27,11 +27,11 @@ QT5_WRAP_CPP(tst_hdr_moc ${HEADERS})
 
 set_property(SOURCE ./src/bindings/bindings.h PROPERTY SKIP_AUTOMOC ON)
 set_property(SOURCE ./src/bindings/bindings.cpp PROPERTY SKIP_AUTOMOC ON)
-add_library(js_calendar_lib SHARED ${tst_hdr_moc} ${SOURCES})
+add_library(js_calendar SHARED ${tst_hdr_moc} ${SOURCES})
 
 set_property(SOURCE ./src/bindings/bindings.h PROPERTY SKIP_AUTOMOC ON)
 
-target_link_libraries(js_calendar_lib PUBLIC
+target_link_libraries(js_calendar PUBLIC
     Qt::Core
     Qt::Gui
     Qt::Widgets
@@ -39,10 +39,10 @@ target_link_libraries(js_calendar_lib PUBLIC
     v8pp #The v8/C++ library wrapper
 )
 
-target_include_directories(js_calendar_lib PUBLIC /usr/include/node)
-target_include_directories(js_calendar_lib PUBLIC
+target_include_directories(js_calendar PUBLIC /usr/include/node)
+target_include_directories(js_calendar PUBLIC
     ../../../src
     ../v8pp
 )
 
-
+install(TARGETS js_calendar DESTINATION /usr/lib/dde-calendar)

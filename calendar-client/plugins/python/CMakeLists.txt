@@ -16,28 +16,19 @@ find_package(Qt5Widgets REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(PythonLibs 3.10 REQUIRED)
 
-add_executable(python_calendar_bin ./src/main.cpp)
-add_library(python_calendar_lib SHARED ./src/python_plugin.h ./src/python_plugin.cpp ./src/bindings.cpp ./src/bindings.h)
+add_library(python_calendar SHARED ./src/python_plugin.h ./src/python_plugin.cpp ./src/bindings.cpp ./src/bindings.h)
 
-target_link_libraries(python_calendar_bin PUBLIC
-    Qt::Core
-    Qt::Gui
-    Qt::Widgets
-    ${PYTHON_LIBRARIES}
-)
-target_link_libraries(python_calendar_lib PUBLIC
+target_link_libraries(python_calendar PUBLIC
     Qt::Core
     Qt::Gui
     Qt::Widgets
     ${PYTHON_LIBRARIES}
 )
 
-target_include_directories(python_calendar_bin PUBLIC /usr/include/python3.9)
-target_include_directories(python_calendar_lib PUBLIC /usr/include/python3.9)
+target_include_directories(python_calendar PUBLIC /usr/include/python3.10)
 
-target_include_directories(python_calendar_bin PUBLIC
+target_include_directories(python_calendar PUBLIC
     ../../src
 )
-target_include_directories(python_calendar_lib PUBLIC
-    ../../src
-)
+
+install(TARGETS python_calendar DESTINATION /usr/lib/dde-calendar)
