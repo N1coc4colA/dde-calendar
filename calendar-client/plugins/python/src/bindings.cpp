@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-#include <Python.h>
-
 
 void assignArgument(CPyObject *obj, std::string s, CPyObject val, int i)
 {

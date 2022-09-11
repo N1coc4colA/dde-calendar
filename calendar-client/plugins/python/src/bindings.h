@@ -1,8 +1,7 @@
 #ifndef BINDINGS_H
 #define BINDINGS_H
 
-
-#include <Python.h>
+#include <python3.10/Python.h>
 #include <string>
 
 

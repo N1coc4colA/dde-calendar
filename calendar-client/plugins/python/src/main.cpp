@@ -1,7 +1,9 @@
 #define PY_SSIZE_T_CLEAN
-#include <Python.h>
 
+
+#include <python3.10/Python.h>
 #include <iostream>
+
 
 int main(int argc, char *argv[])
 {
