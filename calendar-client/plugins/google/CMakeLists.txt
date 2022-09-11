@@ -14,7 +14,7 @@ ADD_DEFINITIONS(-DQT_NO_KEYWORDS)
 
 find_package(Qt5Widgets REQUIRED)
 find_package(PkgConfig REQUIRED)
-find_package(PythonLibs 3.9 REQUIRED)
+find_package(PythonLibs 3.10 REQUIRED)
 
 add_library(google_calendar SHARED ./src/bindings/bindings.h ./src/bindings/bindings.cpp ./src/plugin.cpp ./src/python/pybinds.qrc)
 
