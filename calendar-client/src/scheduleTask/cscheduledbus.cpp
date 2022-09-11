@@ -26,6 +26,8 @@
 #include <QDBusReply>
 #include <QJsonDocument>
 
+#include <iostream>
+
 //[REWORKED] Don't only get local DB's data, also request from plugins. See EDITEDs.
 
 CScheduleDBus *CScheduleDBus::m_scheduleDBus = nullptr;
@@ -101,21 +103,21 @@ bool CScheduleDBus::GetJobs(const QDate &startDate, const QDate &endDate, QMap<Q
     QDBusMessage reply = pCall.reply();
     if (reply.type() != QDBusMessage::ReplyMessage) {
         qWarning() << "GetJobs err ," << reply;
-        //return false; Other services might succeed.
+        //return false; // Other services might succeed.
     } else {
         QDBusReply<QString> jobs =  reply;
 
         if (!jobs.isValid()) {
             return false;
         }
+		//Print 'em all!
         info = ScheduleDataInfo::StrJsonToRangeInfo(jobs.value());
     }
 
     //Then load from the plugins.
     PluginsManager::instance()->getJobs(startDate, endDate, info);
-    // [TODO] Check if we have to merge the results with info.
 
-    return  true;
+    return true;
 }
 
 /**

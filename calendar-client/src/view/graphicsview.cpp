@@ -624,6 +624,9 @@ bool CGraphicsView::JudgeIsCreate(const QPointF &pos)
 void CGraphicsView::RightClickToCreate(QGraphicsItem *listItem, const QPoint &pos)
 {
     Q_UNUSED(listItem);
+
+	//[TODO] Handle from here a way to add an event with a plugin.
+
     m_rightMenu->clear();
     m_rightMenu->addAction(m_createAction);
     QPointF scenePoss = mapToScene(pos);

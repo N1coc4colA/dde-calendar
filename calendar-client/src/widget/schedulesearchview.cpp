@@ -146,22 +146,26 @@ void CScheduleSearchItem::setDurationSize(QFont font)
 }
 void CScheduleSearchItem::slotEdit()
 {
-    CScheduleDlg dlg(0, this);
-    dlg.setData(m_ScheduleInfo);
-    dlg.exec();
+	if (!m_ScheduleInfo.isFromPlugin) {
+	    CScheduleDlg dlg(0, this);
+	    dlg.setData(m_ScheduleInfo);
+	    dlg.exec();
+	} //[TODO] Enable editing from here
 }
 
 void CScheduleSearchItem::slotDelete()
 {
-    //删除日程
-    CScheduleOperation _scheduleOperation(this);
-    bool _isDelete = _scheduleOperation.deleteSchedule(m_ScheduleInfo);
-    //删除日程后，将焦点设置给父类
-    if (_isDelete) {
-        parentWidget()->setFocus(Qt::TabFocusReason);
-    } else {
-        this->setFocus();
-    }
+	if (!m_ScheduleInfo.isFromPlugin) {
+	    //删除日程
+	    CScheduleOperation _scheduleOperation(this);
+	    bool _isDelete = _scheduleOperation.deleteSchedule(m_ScheduleInfo);
+	    //删除日程后，将焦点设置给父类
+	    if (_isDelete) {
+	        parentWidget()->setFocus(Qt::TabFocusReason);
+	    } else {
+	        this->setFocus();
+	    }
+	} //[TODO] Enable editing from here
 }
 
 /**
@@ -184,6 +188,11 @@ void CScheduleSearchItem::slotSchotCutClicked()
         //节日日程不能使用
         if (m_ScheduleInfo.getType() == DDECalendar::FestivalTypeID)
             return;
+
+		if (m_ScheduleInfo.isFromPlugin) {
+			return;
+		} // [TODO] Handle from here editing and removing the event.
+
         m_rightMenu->clear();
         m_rightMenu->addAction(m_editAction);
         m_rightMenu->addAction(m_deleteAction);
@@ -340,6 +349,11 @@ void CScheduleSearchItem::contextMenuEvent(QContextMenuEvent *event)
 
     if (m_ScheduleInfo.getType() == DDECalendar::FestivalTypeID)
         return;
+
+	if (m_ScheduleInfo.isFromPlugin) {
+		return;
+	} // [TODO] Handle from here editing and removing the event.
+
     //在有些环境中弹出右击菜单不会触发leaveEvent，主动更新leave对应的事件处理
     m_mouseStatus = M_NONE;
     update();

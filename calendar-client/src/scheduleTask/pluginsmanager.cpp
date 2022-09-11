@@ -1,6 +1,7 @@
 #include "pluginsmanager.h"
 
 #include "plugin_checking.h"
+#include "calendar_service_plugin_interface.h"
 
 #include <QTextStream>
 #include <QFile>
@@ -16,6 +17,9 @@ typedef CalendarServicePluginInterface * (*instFunction)(QObject *);
 PluginsManager::PluginsManager(QObject *p) : QObject(p)
 {
 	readDisabledPlugins();
+
+	StorageSystem::setSharedData("user", qgetenv("USERNAME"));
+
 	QDir dir("/usr/lib/dde-calendar");
 	QStringList filter = {"*.so"};
 	dir.setNameFilters(filter);
@@ -131,13 +135,34 @@ void PluginsManager::getJobs(QDate start, QDate end, QMap<QDate, QVector<Schedul
 	for (auto plug : pluginsList) {
 		plug->startGettingJobs(start, end);
 	}
+
+	/*
+		We have to generate a separate map the merge both. Otherwise, we can have some information becoming available from a plugin to another.
+		Example: You have your Google Calendar account plugin that loads its data into the map.
+		Then another plugin, which shouldn't have been loaded is, in fact, loaded. Then we pass the map to it so we load the data.
+		However, under the hood, the plugin interacts with a webserver, it sends back all the data already in the map: it is a spyware.
+		To avoid such thing, we pass an empty map, and we merge it, into 2 separated steps, not directly.
+	*/
+
+
 	for (auto plug : pluginsList) {
-		plug->getJobs(map);
+		QMap<QDate, QVector<ScheduleDataInfo>> tmp;
+		plug->getJobs(tmp);
+
+		for(auto e : tmp.keys()) {
+			for (auto s : tmp[e]) {
+				s.isFromPlugin = true;
+				s.setID(-1);
+				s.calendarServiceName = mappedPlugins.key(plug);
+				map[e] << s;
+			}
+		}
 	}
 }
 
 void PluginsManager::getJob(qint64 jid, ScheduleDataInfo &out)
 {
+	//[CHECK] Do we have to handle this here this way too?
 }
 
 

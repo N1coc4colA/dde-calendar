@@ -476,6 +476,7 @@ void CMonthGraphicsview::RightClickToCreate(QGraphicsItem *listItem, const QPoin
     Q_UNUSED(pos);
     CMonthDayItem *Dayitem = dynamic_cast<CMonthDayItem *>(listItem);
 
+	//[TODO] Add from here a way to handle adding an event with a plugin.
     if (Dayitem != nullptr) {
         m_rightMenu->clear();
         m_rightMenu->addAction(m_createAction);

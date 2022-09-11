@@ -371,13 +371,15 @@ void CYearScheduleOutView::mousePressEvent(QMouseEvent *event)
             this->hide();
             //跳转到周视图
         } else {
-            //如果日程类型不为节假日或纪念日则显示编辑框
-            if (scheduleinfoList.at(currentIndex).getType() != DDECalendar::FestivalTypeID) {
-                //因为提示框会消失，所以设置CScheduleDlg的父类为主窗口
-                CScheduleDlg dlg(0, qobject_cast<QWidget *>(this->parent()));
-                dlg.setData(scheduleinfoList.at(currentIndex));
-                dlg.exec();
-            }
+  	          //如果日程类型不为节假日或纪念日则显示编辑框
+  	          if (scheduleinfoList.at(currentIndex).getType() != DDECalendar::FestivalTypeID) {
+				if (!scheduleinfoList.at(currentIndex).isFromPlugin) {
+  	              //因为提示框会消失，所以设置CScheduleDlg的父类为主窗口
+  	              CScheduleDlg dlg(0, qobject_cast<QWidget *>(this->parent()));
+  	              dlg.setData(scheduleinfoList.at(currentIndex));
+  	              dlg.exec();
+  	          } //[TODO] Enable editing the event from here.
+			}
         }
     }
 }

@@ -88,6 +88,8 @@ void CAllDayEventWeekView::RightClickToCreate(QGraphicsItem *listItem, const QPo
     m_rightMenu->clear();
     m_rightMenu->addAction(m_createAction);
 
+	//[TODO] Handle adding an event from here.
+
     m_createDate.setDate(m_coorManage->getsDate(mapFrom(this, pos)));
     m_createDate.setTime(QTime::currentTime());
     m_rightMenu->exec(QCursor::pos());
