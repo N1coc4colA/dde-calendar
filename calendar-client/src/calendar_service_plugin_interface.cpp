@@ -3,6 +3,10 @@
 #include <QMap>
 #include <QVariant>
 
+#include <iostream>
+
+#pragma message("Has been processed ------------------------------------------------------------------------------------")
+
 class CSPI_Storage
 {
 public:
@@ -14,13 +18,15 @@ public:
 	QMap<QString, QVariant> commonData;
 };
 
-QVariant CalendarServicePluginInterface::sharedData(QString s)
+QVariant StorageSystem::sharedData(QString s)
 {
+	std::cout << "Accessing common value: " << s.toStdString() << std::endl;
 	return CSPI_Storage::instance()->commonData[s];
 }
 
-void CalendarServicePluginInterface::setSharedData(QString k, QVariant v)
+void StorageSystem::setSharedData(QString k, QVariant v)
 {
+	std::cout << "Setting common value: " << k.toStdString() << std::endl;
 	CSPI_Storage::instance()->commonData[k] = v;
 }
 

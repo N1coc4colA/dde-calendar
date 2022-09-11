@@ -9,6 +9,13 @@
 
 #include <QObject>
 
+class StorageSystem
+{
+public:
+	static QVariant sharedData(QString key);
+	static void setSharedData(QString key, QVariant val);
+};
+
 class CalendarServicePluginInterface : public QObject
 {
 public:
@@ -26,9 +33,6 @@ public:
     virtual QString serviceName() const = 0;
     virtual QString serviceVersion() const = 0;
     virtual QString serviceSettings() const = 0;
-    
-    static QVariant sharedData(QString key);
-    static void setSharedData(QString key, QVariant val);
 
 Q_SIGNALS:
 	void eventAdded();
