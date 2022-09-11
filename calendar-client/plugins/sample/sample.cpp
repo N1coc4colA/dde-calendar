@@ -30,12 +30,22 @@ void CalendarSample::startGettingJobs(QDate beg, QDate end)
 {
 	//Load some data from a server.
 	std::cout << "Starting to get the jobs." << std::endl;
+	notice = ((beg < QDate::currentDate()) && (QDate::currentDate() < end));
 }
 
 void CalendarSample::getJobs(QMap<QDate, QVector<ScheduleDataInfo> > &info)
 {
 	//Add your things to the QMap's content (info)
 	std::cout << "Giving retrieved jobs result." << std::endl;
+
+	if (notice) {
+		notice = false;
+		QDate target = QDate::currentDate();
+		QString current = target.toString("yyyy-MM-dd");
+
+		ScheduleDataInfo _sch = ScheduleDataInfo::JsonStrToSchedule("{\"AllDay\":false,\"Description;\":\"\",\"End\":\"" + current + "T11:15:00+01:00\",\"ID\":-1,\"Ignore\":[],\"IsLunar\":false,\"RRule\":\"\",\"RecurID\":0,\"Remind\":\"\",\"Start\":\"" + current + "T10:15:00+01:00\",\"Title\":\"This is today! :)\",\"Type\":1}");
+		info[target] << _sch;
+	}
 }
 
 QString CalendarSample::serviceName() const

@@ -1,6 +1,7 @@
 #include "bindings.h"
 
 #include "calendar_service_plugin_interface.h"
+#include "python_plugin.h"
 
 #include <QFile>
 #include <QDir>
@@ -358,11 +359,11 @@ PythonAPI::PythonAPI()
 	QFile f("/usr/lib/dde-calendar/python-plugin/main.py");
 	f.open(QIODevice::ReadOnly);
 
-	if (!CalendarServicePluginInterface::sharedData("python_is_loaded").toBool()) {
-		CalendarServicePluginInterface::setSharedData("python_is_loaded", true);
+	if (!StorageSystem::sharedData("python_is_loaded").toBool()) {
+		StorageSystem::setSharedData("python_is_loaded", true);
 		Py_Initialize();
 	}
-	CalendarServicePluginInterface::setSharedData("python_running_extensions", CalendarServicePluginInterface::sharedData("python_running_extensions").toInt() +1);
+	StorageSystem::setSharedData("python_running_extensions", StorageSystem::sharedData("python_running_extensions").toInt() +1);
 
 	CPYO__(pGlobal, PyDict_New());
 
@@ -418,11 +419,11 @@ PythonAPI::PythonAPI()
 PythonAPI::~PythonAPI()
 {
 	LOG_FN
-	if ((CalendarServicePluginInterface::sharedData("python_running_extensions").toInt() -1) == 0 && CalendarServicePluginInterface::sharedData("python_is_loaded").toBool()) {
-		CalendarServicePluginInterface::setSharedData("python_is_loaded", false);
+	if ((StorageSystem::sharedData("python_running_extensions").toInt() -1) == 0 && StorageSystem::sharedData("python_is_loaded").toBool()) {
+		StorageSystem::setSharedData("python_is_loaded", false);
 		Py_Finalize();
 	}
-	CalendarServicePluginInterface::setSharedData("python_running_extensions", CalendarServicePluginInterface::sharedData("python_running_extensions").toInt() -1);
+	StorageSystem::setSharedData("python_running_extensions", StorageSystem::sharedData("python_running_extensions").toInt() -1);
 }
 
 PythonAPI::operator CPyObject()

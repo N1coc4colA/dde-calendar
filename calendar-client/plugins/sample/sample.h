@@ -18,10 +18,11 @@ public:
 	void startGettingJobs(QDate beg, QDate end) override;
 	void getJobs(QMap<QDate, QVector<ScheduleDataInfo> > &info) override;
 	
-	
     QString serviceName() const override;
     QString serviceVersion() const override;
     QString serviceSettings() const override;
+
+	bool notice = false;
 };
 
 #endif

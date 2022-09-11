@@ -5,8 +5,6 @@
 #include <string>
 
 
-//class PyObject;
-
 /* Helper functions to */
 
 
