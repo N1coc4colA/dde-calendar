@@ -20,6 +20,7 @@ public:
 		return inst;
 	}
 
+	void readDisabledPlugins();
 	void disablePlugin(QString name);
 	void enablePlugin(QString name);
 	QMap<QString, bool> getPlugins();
@@ -31,6 +32,7 @@ Q_SIGNALS:
 	void requiresUpdate();
 
 private:
+	QStringList disabledPlugins;
 	QList<CalendarServicePluginInterface *> pluginsList;
 	QMap<QString, QString> pluginsPaths;
 	QMap<QString, CalendarServicePluginInterface *> mappedPlugins;
